@@ -1,2 +1,2 @@
 # cpDNA_standardization
-Script for standardiz
+Script for standardization of chloroplast DNA sequences.
