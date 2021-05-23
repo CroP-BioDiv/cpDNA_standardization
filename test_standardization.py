@@ -60,9 +60,13 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description="""
 Tests chloroplast project data.
-Input directory with annotated sequences is subdirectory 03_GeSeq. Filenames are names NC_<num>.gb.
-Standardized sequences are in subdirectory Gn_01_seq. Filenames are names p_<num>.fa, p_<num>.gb, and NC_<num>.gb.
-""")
+
+Input directory with annotated sequences is project's subdirectory 03_GeSeq.
+Input filenames have format NC_<num>.gb.
+
+Standardized sequences are in project's subdirectory Gn_01_seq.
+Filenames have format p_<num>.fa, p_<num>.gb, or NC_<num>.gb.
+""", formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument('project', help='Project directory.')
     parser.add_argument('-s', '--stop-on-error', action='store_true', help='Stop processing on error')
     parser.add_argument('-l', '--length-ir-difference', default=10, type=int,
