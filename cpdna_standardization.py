@@ -73,7 +73,8 @@ def _copy_sequence_annotations(from_seq_rec, to_seq_rec):
     f_ann = from_seq_rec.annotations
     t_ann = to_seq_rec.annotations
     for k in ('molecule_type', 'topology', 'accessions', 'organism', 'taxonomy'):
-        if v := f_ann.get(k):
+        v = f_ann.get(k)
+        if v:
             t_ann[k] = v
 
 
@@ -114,7 +115,8 @@ def standardize(seq_rec, length_ir_difference=None, info=False):
     #  - None if it IR annotation is missing,
     #  - True if sequence is in standard form
     #  - SeqRecord object of seqeunce in standard form
-    if not (irs := find_chloroplast_irs(seq_rec, length_ir_difference=length_ir_difference)):
+    irs = find_chloroplast_irs(seq_rec, length_ir_difference=length_ir_difference)
+    if not irs:
         if info:
             print(f"info: sequence {seq_rec.id} doesn't have annotated IRs!")
         return
