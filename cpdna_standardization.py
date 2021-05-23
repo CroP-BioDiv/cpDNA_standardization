@@ -173,34 +173,39 @@ def _convert(input_filename, output_filename, length_ir_difference):
         SeqIO.write([output_seq_rec], open(output_filename, 'w'), 'fasta')
 
 
-def run(input_filename, output_filename, length_ir_difference):
-    if len(input_filename) > 1:
-        if os.path.exists(output_filename):
-            if os.path.isfile(output_filename):
-                print(f'error: in case of converting more sequences, output should be directory')
-                return
-        else:
-            os.makedirs(output_filename)
+def run(input_filename, output_filename, output_dirname, length_ir_difference):
+    if len(input_filename) == 1 and output_filename:
+        _convert(input_filename[0], output_filename, length_ir_difference)
+    else:
+        if not os.path.isdir(output_dirname):
+            os.makedirs(output_dirname)
 
         for f in input_filename:
-            _convert(f, os.path.join(output_filename,
-                                     os.path.splitext(os.path.basename(f))[0] + '.fa',
-                                     length_ir_difference))
-    else:
-        _convert(input_filename[0], output_filename, length_ir_difference)
+            base_name = os.path.splitext(os.path.basename(f))[0]
+            _convert(f, os.path.join(output_dirname, f'{base_name}.fa'), length_ir_difference)
 
 
 if __name__ == '__main__':
     import argparse
-    parser = argparse.ArgumentParser(description="Standardize cpDNA sequence")
-    parser.add_argument('input_filename', nargs='+', help='Input filename(s), in GenBank format.')
-    parser.add_argument('-o', '--output', help='Output filename or directory. Output is in fasta format.')
-    parser.add_argument('-s', '--save-standardized', help='Save standardized also')
+    parser = argparse.ArgumentParser(description="""
+Script converts one or more annotated sequences, in GenBank format.
+Converted sequences are in fasta format.
+
+In case of one input sequence, ouput can be specified as specific filename with `-o` argument.
+
+In case of more input sequences, output is specified as directory name, and output files are
+named based on input filenames by changing extension into '.fa'
+""", formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('input_filename', nargs='+', help='Input filename(s).')
+    parser.add_argument('-o', '--output-filename', help='Output filename.')
+    parser.add_argument('-d', '--output-dirname', default='.',
+                        help='Output directory. Default current working directory.')
     parser.add_argument('-l', '--length-ir-difference', default=None, type=int,
-                        help='Max difference in length between IRa and IRb')
+                        help='Max difference in length between IRa and IRb.')
     # ToDo:
     # parser.add_argument('-s', '--save-standardized', help='Save standardized also')
     # parser.add_argument('-n', '--save-not-annotated', help='Save not annotated')
     params = parser.parse_args()
 
-    run(params.input_filename, params.output, params.length_ir_difference)
+    run(params.input_filename, params.output_filename, params.output_dirname, params.length_ir_difference)
