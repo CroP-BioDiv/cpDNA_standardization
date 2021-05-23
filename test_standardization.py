@@ -69,6 +69,7 @@ Standardized sequences are in subdirectory Gn_01_seq. Filenames are names p_<num
                         help='Max difference in length between IRa and IRb')
     params = parser.parse_args()
 
-    if (errors := test_project(params.project, params.stop_on_error, params.length_ir_difference)):
+    errors = test_project(params.project, params.stop_on_error, params.length_ir_difference)
+    if errors:
         for e in errors:
             print(e)
