@@ -30,3 +30,9 @@ python3 cpdna_standardization.py <path_to_gen_bank_seq> -o output_sequence.fa
 # Convert more sequences
 python3 cpdna_standardization.py <dir_to_gen_bank_seqs>/*.gb -d output_sequences
 ```
+
+
+## Requirements
+
+Script is implemented in Python3, and uses [BioPython](https://biopython.org/) library.
+

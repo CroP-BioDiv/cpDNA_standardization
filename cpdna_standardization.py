@@ -5,7 +5,9 @@ from Bio.SeqFeature import FeatureLocation, CompoundLocation
 
 def find_chloroplast_irs(seq_rec, length_ir_difference=None):
     # Finds the longest pair of inverted repeats
-    # Note: in 
+    # Note: in some cases annotated IRs are of different length!
+    #       If argument length_ir_difference (int) is set,
+    #       than difference between irs lengths of irs will be checked to given value.
     _ir = ('inverted',)
     rep_regs = [f for f in seq_rec.features
                 if f.type == 'repeat_region' and f.qualifiers.get('rpt_type', _ir)[0] == 'inverted']
@@ -112,7 +114,7 @@ def chloroplast_parts_orientation(seq_rec, partition):
 
 def standardize(seq_rec, length_ir_difference=None, info=False):
     # Returns:
-    #  - None if it IR annotation is missing,
+    #  - None if IR annotation is missing,
     #  - True if sequence is in standard form
     #  - SeqRecord object of seqeunce in standard form
     irs = find_chloroplast_irs(seq_rec, length_ir_difference=length_ir_difference)
